@@ -1,6 +1,11 @@
 // Import the functions you need from the SDKs you need.
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import { 
+    getAuth, 
+    signInWithRedirect, 
+    signInWithPopup, 
+    GoogleAuthProvider,
+} from 'firebase/auth';
 // getAuth - We need to create an Auth instance.
 // signInWithRedirect - We can sign in using a redirect.
 // signInWithPopup - Or we can sign in using a popup.
@@ -30,14 +35,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider(); // GoogleAuthProvider is a class from Firebase authentication, connected to Google auth. Sometimes we want to generate multiple providers if different providers do different things. ie: Different buttons could do different things.
+const googleProvider = new GoogleAuthProvider(); // GoogleAuthProvider is a class from Firebase authentication, connected to Google auth. Sometimes we want to generate multiple providers if different providers do different things. ie: Different buttons could do different things.
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
     prompt: "select_account" // Every time somebody interacts with our provider, we want to force them to select an account.
 });
 
 export const auth = getAuth(); // There's only 1 authentication. It should be the same one for every application.
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore(); // Instantiate our Firestore.
 

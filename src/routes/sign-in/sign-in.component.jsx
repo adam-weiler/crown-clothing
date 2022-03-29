@@ -1,10 +1,28 @@
-import { signInWithGooglePopup, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
+import { useEffect } from 'react';
+import { getRedirectResult } from 'firebase/auth';
 
-const signIn = () => {
+import { 
+    auth,
+    signInWithGooglePopup, 
+    signInWithGoogleRedirect,
+    createUserDocumentFromAuth,
+} from '../../utils/firebase/firebase.utils';
+
+const SignIn = () => {
+    useEffect(async () => { // We want to run this code once, the first time this components loads.
+        const response = await getRedirectResult(auth);
+        console.log(response);
+
+        if (response) { // The page initially loads with this null. But if it is not null, generate a new userDocRef.
+            const userDocRef = await createUserDocumentFromAuth(response.user)
+        }
+
+    }, [])
+
     const logGoogleUser = async () => {
         // const response = await signInWithGooglePopup();
         const {user} = await signInWithGooglePopup(); // This is response.user
-        console.log(user);
+        console.log('a ' + user);
         const userDocRef = await createUserDocumentFromAuth(user)
     }
 
@@ -14,8 +32,11 @@ const signIn = () => {
             <button onClick={logGoogleUser}>
                 Sign in with Google popup
             </button>
+            <button onClick={signInWithGoogleRedirect}>
+                Sign in with Google Redirect
+            </button>
         </div>
     );
 };
 
-export default signIn;
+export default SignIn;
