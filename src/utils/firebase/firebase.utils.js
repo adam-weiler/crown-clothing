@@ -6,8 +6,6 @@ import {
     signInWithPopup, 
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
-
-
     signInWithEmailAndPassword,
 } from 'firebase/auth';
 // getAuth - We need this to create an Auth instance.
@@ -100,10 +98,10 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 
 
 
-export const signInUserWithEmailandPassword = async (email, password) => {
-    if (!email || !password) return;
+export const signInAuthUserWithEmailandPassword = async (email, password) => {
+    if (!email || !password) return; // If no email or password are provided, don't run this function.
 
-    console.log('signInUserWithEmailandPassword starting')
+    console.log('signInAuthUserWithEmailandPassword starting')
 
     return await signInWithEmailAndPassword (auth, email, password);
 }

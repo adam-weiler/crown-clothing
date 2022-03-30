@@ -3,7 +3,10 @@ import { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInUserWithEmailandPassword } from '../../utils/firebase/firebase.utils';
+import { 
+    signInWithGooglePopup, 
+    createUserDocumentFromAuth, 
+    signInAuthUserWithEmailandPassword } from '../../utils/firebase/firebase.utils';
 
 import './sign-in-form.styles.scss';
 
@@ -21,6 +24,13 @@ const SignInForm = () => {
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
     }
+    
+    const signInWithGoogle = async () => {
+        // const response = await signInWithGooglePopup();
+        const {user} = await signInWithGooglePopup(); // This is response.user
+        // console.log(user);
+        const userDocRef = await createUserDocumentFromAuth(user)
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // We don't want any default behaviour of the form.
@@ -28,20 +38,16 @@ const SignInForm = () => {
         console.log('handlesubmit')
 
         try { // Check if we've authenticated the user with email & password.
-            const { user } = await signInUserWithEmailandPassword(  // Try to create new authentication with email and password.
+            const response = await signInAuthUserWithEmailandPassword(  // Try to create new authentication with email and password.
                 email, 
                 password,
             );
-            console.log(user)
-            console.log('something happened')
+            console.log(response)
 
             // await createUserDocumentFromAuth(user);    // Using user returned from auth, try to create a user document with user and optional display name.
             resetFormFields();
 
         } catch(error) {
-            if (error.code === 'auth/email-already-in-use') {
-                alert('Cannot create user, email already in use.');
-            }
             console.log('user login encountered an error: ', error);
         }
     }
@@ -54,7 +60,7 @@ const SignInForm = () => {
 
     return (
         <div className='sign-up-container'>
-            <h2>I already have an account</h2>
+            <h2>Already have an account</h2>
             <span>Sign in with your email and password.</span>
             <form onSubmit={handleSubmit}>
 
@@ -76,8 +82,13 @@ const SignInForm = () => {
                     value={password}
                     minLength='8'
                 />
+                <div className='buttons-container'>
+                    <Button type="submit">Sign in</Button>
 
-                <Button type="submit">Sign in</Button>
+                    <Button buttonType='google' onClick={signInWithGoogle}>
+                        Google Sign In
+                    </Button>
+                </div>
                 
             </form>
         </div>

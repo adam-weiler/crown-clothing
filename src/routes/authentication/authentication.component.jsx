@@ -11,7 +11,7 @@ import {
 import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
 
-const SignIn = () => {
+const Authentication = () => {
     // useEffect(async () => { // We want to run this code once, the first time this components loads.
     //     const response = await getRedirectResult(auth);
     //     console.log(response);
@@ -22,20 +22,10 @@ const SignIn = () => {
 
     // }, [])
 
-    const logGoogleUser = async () => {
-        // const response = await signInWithGooglePopup();
-        const {user} = await signInWithGooglePopup(); // This is response.user
-        console.log(user);
-        const userDocRef = await createUserDocumentFromAuth(user)
-    }
 
     return (
         <div>
             <SignInForm />
-
-            <button onClick={logGoogleUser}>
-                Sign in with Google popup
-            </button>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <SignUpForm />
             {/* <button onClick={signInWithGoogleRedirect}>
@@ -45,4 +35,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default Authentication;
