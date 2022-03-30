@@ -5,6 +5,7 @@ import {
     signInWithRedirect, 
     signInWithPopup, 
     GoogleAuthProvider,
+    createUserWithEmailAndPassword,
 } from 'firebase/auth';
 // getAuth - We need to create an Auth instance.
 // signInWithRedirect - We can sign in using a redirect.
@@ -48,6 +49,8 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 export const db = getFirestore(); // Instantiate our Firestore.
 
 export const createUserDocumentFromAuth = async (userAuth) => { // Receives userAuth object and then stores it in Firestore.
+    if (!userAuth) return;  // If we don't receive a userAuth we don't want to run this function.
+
     const userDocRef = doc(db, 'users', userAuth.uid); // Pass in our Firestore database instance, our Users collection, and a unique identifier returned in the object from the popup request.
 
     console.log(userDocRef);
@@ -76,4 +79,10 @@ export const createUserDocumentFromAuth = async (userAuth) => { // Receives user
     } else {
         return userDocRef;
     }
+}
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return; // If no email or password are provided, don't run this function.
+
+    return await createUserWithEmailAndPassword(auth, email, password);
 }
