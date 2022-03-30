@@ -7,10 +7,11 @@ import {
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
 } from 'firebase/auth';
-// getAuth - We need to create an Auth instance.
+// getAuth - We need this to create an Auth instance.
 // signInWithRedirect - We can sign in using a redirect.
 // signInWithPopup - Or we can sign in using a popup.
-// GoogleAuthProvider - 
+// GoogleAuthProvider - We need this to start a sign-in process for an unauthenticated user.
+// createUserWithEmailAndPassword - We need this to create a new account by passing user's email and password.
 
 import {
     getFirestore,
@@ -48,11 +49,10 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 
 export const db = getFirestore(); // Instantiate our Firestore.
 
-export const createUserDocumentFromAuth = async (userAuth) => { // Receives userAuth object and then stores it in Firestore.
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => { // Receives userAuth object and then stores it in Firestore. The additionalInformation is optional, depending if we're recieving the user object from Google (addtitionalInfo not required), or if new user is signing up (addititionalInfo is required).
     if (!userAuth) return;  // If we don't receive a userAuth we don't want to run this function.
 
     const userDocRef = doc(db, 'users', userAuth.uid); // Pass in our Firestore database instance, our Users collection, and a unique identifier returned in the object from the popup request.
-
     console.log(userDocRef);
 
     const userSnapshot = await getDoc(userDocRef);
@@ -60,18 +60,18 @@ export const createUserDocumentFromAuth = async (userAuth) => { // Receives user
     console.log(userSnapshot.exists()); // This reference in Firebase doesn't exist yet.
 
     //We need to check if User Data exists.
-
     //If data doesn't exist, we want to create or set the document with userSnapshot pointer.
-
     //If it exists, we want to return back userDocRef
-
     if(!userSnapshot.exists()) { // If user doesn't exist yet, we want to create it with the pointer inside of userSnapshot.
         const { displayName, email } = userAuth;
         const createdAt = new Date();
 
         try {
             await setDoc(userDocRef, {
-                displayName, email, createdAt,
+                displayName, 
+                email, 
+                createdAt,
+                ...additionalInformation, // We add this in case displayName is null. So when we call this function, additionalInformation is passed in and writes over displayName.
             })
         } catch (error) {
             console.log('error creating the user', error.message)

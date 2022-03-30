@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 
 const defaultFormFields = {
-    displayName: 'John',
-    email: '123@fake.st',
-    password: '1fJ3K8(53Jfa3*',
-    confirmPassword: '1fJ3K8(53Jfa3*',
+    displayName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
 }
 
 const SignUpForm = () => {
@@ -15,38 +15,34 @@ const SignUpForm = () => {
 
     // console.log(formFields)
 
+    const resetFormFields = () => {
+        setFormFields(defaultFormFields);
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault(); // We don't want any default behaviour of the form.
 
-        // const displayName = event.target[0].value;
-        // const email = event.target[1].value;
-        // const password = event.target[2].value;
-        // cost confirmPassword = event.target[3].value;
-
-        // console.log(displayName, email, password, confirmPassword)
-
-        // console.log(event)
-        // console.log(event.target[0].value)
-        // console.log(event.target[1].value)
-        // console.log(event.target[2].value)
-        // console.log(event.target[3].value)
-        // console.log(event.target[4].value)
-        // console.log(event.target)
-
-        // Confirm the 2 passwords match.
-        if (password != confirmPassword) {
-            console.log('passwords dont match')
+        if (password != confirmPassword) { // Confirm the 2 passwords match.
+            alert('passwords do not match.');
             return;
         };
 
-        console.log('passwords match')
+        try { // Check if we've authenticated the user with email & password.
+            const { user } = await createAuthUserWithEmailAndPassword(  // Try to create new authentication with email and password.
+                email, 
+                password,
+            );
+            console.log(user)
 
-        // Check if we've authenticated the user with email & password.
-        const {user} = await createAuthUserWithEmailAndPassword(email, password);
-        console.log(user);
+            await createUserDocumentFromAuth(user, { displayName });    // Using user returned from auth, try to create a user document with user and optional display name.
+            resetFormFields();
 
-        //We need to create a user document from what this returns.
-        const userDocRef = await createUserDocumentFromAuth(user)
+        } catch(error) {
+            if (error.code === 'auth/email-already-in-use') {
+                alert('Cannot create user, email already in use.');
+            }
+            console.log('user creation encountered an error: ', error);
+        }
     }
 
     const handleChange = (event) => { // We wanted to generacize this handleChange, so it will work with all 4 input fields.
@@ -66,10 +62,10 @@ const SignUpForm = () => {
                 <input type="email" required onChange={handleChange} name="email" value={email} />
 
                 <label>Password</label>
-                <input type="password" required onChange={handleChange} name="password" value={password} />
+                <input type="password" required onChange={handleChange} name="password" value={password} minLength="8" />
 
                 <label>Confirm Password</label>
-                <input type="password" required onChange={handleChange} name="confirmPassword" value={confirmPassword} />
+                <input type="password" required onChange={handleChange} name="confirmPassword" value={confirmPassword} minLength="8" />
 
                 <button type="submit">Sign up</button>
             </form>
