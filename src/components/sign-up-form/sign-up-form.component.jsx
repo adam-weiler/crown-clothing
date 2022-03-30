@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import FormInput from '../form-input/form-input.component';
+
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 
 const defaultFormFields = {
@@ -55,17 +57,44 @@ const SignUpForm = () => {
         <div>
             <h1>Sign up with your email and password.</h1>
             <form onSubmit={handleSubmit}>
-                <label>Display Name</label>
-                <input type="text" required onChange={handleChange} name="displayName" value={displayName} />
 
-                <label>Email</label>
-                <input type="email" required onChange={handleChange} name="email" value={email} />
+                <FormInput
+                    label='Display Name'
+                    type='text'
+                    required
+                    onChange={handleChange}
+                    name='displayName'
+                    value={displayName}
+                />
 
-                <label>Password</label>
-                <input type="password" required onChange={handleChange} name="password" value={password} minLength="8" />
+                <FormInput
+                    label='Email'
+                    type='email'
+                    required
+                    onChange={handleChange}
+                    name='email'
+                    value={email}
+                />
 
-                <label>Confirm Password</label>
-                <input type="password" required onChange={handleChange} name="confirmPassword" value={confirmPassword} minLength="8" />
+                <FormInput
+                    label='Password'
+                    type='password'
+                    required
+                    onChange={handleChange}
+                    name='password'
+                    value={password}
+                    minLength='8'
+                />
+
+                <FormInput
+                    label='Confirm Password'
+                    type='password'
+                    required
+                    onChange={handleChange}
+                    name='confirmPassword'
+                    value={confirmPassword}
+                    minLength='8'
+                />
 
                 <button type="submit">Sign up</button>
             </form>
