@@ -9,6 +9,7 @@ const Shop = () => {
 }
 
 const App = () => {
+  console.clear()
   return (
     <Routes>
       <Route path='/' element={<Navigation />} >
