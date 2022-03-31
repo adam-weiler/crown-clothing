@@ -1,15 +1,10 @@
 // import { useEffect } from 'react';
 // import { getRedirectResult } from 'firebase/auth';
 
-import { 
-    // auth,
-    signInWithGooglePopup, 
-    // signInWithGoogleRedirect,
-    createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils';
-
 import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
+
+import './authentication.styles.scss';
 
 const Authentication = () => {
     // useEffect(async () => { // We want to run this code once, the first time this components loads.
@@ -24,9 +19,8 @@ const Authentication = () => {
 
 
     return (
-        <div>
+        <div className='authentication-container'>
             <SignInForm />
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <SignUpForm />
             {/* <button onClick={signInWithGoogleRedirect}>
                 Sign in with Google Redirect
