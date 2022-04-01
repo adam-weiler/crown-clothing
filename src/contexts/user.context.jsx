@@ -1,7 +1,7 @@
 // import { getByDisplayValue } from '@testing-library/react';
 import { createContext, useState, useEffect } from 'react';
 
-import { onAuthStateChangedListener } from '../utils/firebase/firebase.utils'
+import { onAuthStateChangedListener, createUserDocumentFromAuth } from '../utils/firebase/firebase.utils'
 
 // The actual value you want to access.
 export const UserContext = createContext({  // Default values.
@@ -16,6 +16,10 @@ export const UserProvider = ({ children }) => { // Any children of UserProvider 
     useEffect(() => { // It checks the authentication state automatically when this function mounts.
         const unsubscribe = onAuthStateChangedListener((user) => {
             console.log(user);
+            if (user) {
+                createUserDocumentFromAuth(user); // User signing in with Google or with a new account.
+            }
+            setCurrentUser(user);
         });
 
         return unsubscribe;
