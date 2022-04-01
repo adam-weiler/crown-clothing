@@ -7,12 +7,16 @@ import {
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
 } from 'firebase/auth';
 // getAuth - We need this to create an Auth instance.
 // signInWithRedirect - We can sign in using a redirect.
 // signInWithPopup - Or we can sign in using a popup.
 // GoogleAuthProvider - We need this to start a sign-in process for an unauthenticated user.
 // createUserWithEmailAndPassword - We need this to create a new account by passing user's email and password.
+// signInWithEmailAndPassword
+// signOut - To sign users out.
 
 import {
     getFirestore,
@@ -48,24 +52,17 @@ export const auth = getAuth(); // There's only 1 authentication. It should be th
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
-
-
-
-
-
-
-
 export const db = getFirestore(); // Instantiate our Firestore.
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => { // Receives userAuth object and then stores it in Firestore. The additionalInformation is optional, depending if we're recieving the user object from Google (addtitionalInfo not required), or if new user is signing up (addititionalInfo is required).
     if (!userAuth) return;  // If we don't receive a userAuth we don't want to run this function.
 
     const userDocRef = doc(db, 'users', userAuth.uid); // Pass in our Firestore database instance, our Users collection, and a unique identifier returned in the object from the popup request.
-    console.log(userDocRef);
+    // console.log(userDocRef);
 
     const userSnapshot = await getDoc(userDocRef);
-    console.log(userSnapshot);
-    console.log(userSnapshot.exists()); // This reference in Firebase doesn't exist yet.
+    // console.log(userSnapshot);
+    // console.log(userSnapshot.exists()); // This reference in Firebase doesn't exist yet.
 
     //We need to check if User Data exists.
     //If data doesn't exist, we want to create or set the document with userSnapshot pointer.
@@ -95,9 +92,6 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
     return await createUserWithEmailAndPassword(auth, email, password);
 }
 
-
-
-
 export const signInAuthUserWithEmailandPassword = async (email, password) => {
     if (!email || !password) return; // If no email or password are provided, don't run this function.
 
@@ -105,3 +99,7 @@ export const signInAuthUserWithEmailandPassword = async (email, password) => {
 
     return await signInWithEmailAndPassword (auth, email, password);
 }
+
+export const signOutUser = async () => await signOut(auth); // Tells Firebase to sign out the user.
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback); // A permanent open listener. You should disable it when the component unmounts. Whenever you instantiate this function, you have to give me a callback.

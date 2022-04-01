@@ -33,7 +33,8 @@ const SignInForm = () => {
         // const response = await signInWithGooglePopup();
         const {user} = await signInWithGooglePopup(); // This is response.user
         // console.log(user);
-        const userDocRef = await createUserDocumentFromAuth(user)
+        // const userDocRef = await createUserDocumentFromAuth(user)
+        createUserDocumentFromAuth(user);
     }
 
     const handleSubmit = async (event) => {
@@ -48,11 +49,8 @@ const SignInForm = () => {
             );
             console.log(user)
 
-            setCurrentUser(user);
-
             // await createUserDocumentFromAuth(user);    // Using user returned from auth, try to create a user document with user and optional display name.
             resetFormFields();
-
         } catch(error) {
             switch(error.code) { // If an error occurs, tries to warn user or log to console.
                 case 'auth/wrong-password':
