@@ -1,15 +1,15 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 
-import SHOP_DATA from '../assets/shop-data.json';
+import PRODUCTS from '../assets/shop-data.json';
 
-export const ProductContext = createContext({
-    currentProducts: SHOP_DATA,
-})
+export const ProductsContext = createContext({
+    products: [],
+});
 
 export const ProductsProvider = ({children}) => {
 
-    const [currentProducts, setCurrentProducts] = useState(SHOP_DATA);
-    const value = { currentProducts, setCurrentProducts };
+    const [products, setProducts] = useState(PRODUCTS);
+    const value = { products };
 
     // useEffect(() => {
     //     setCurrentProducts(SHOP_DATA);
@@ -26,7 +26,8 @@ export const ProductsProvider = ({children}) => {
         //         </div>
         //     ))}
         // </div>
-        <ProductContext.Provider value={value}>{children}
+        <ProductsContext.Provider value={value}>
+        {children}
         
         { //SHOP_DATA.map(({id, name}) => (
         //             <div key={id}>
@@ -36,7 +37,7 @@ export const ProductsProvider = ({children}) => {
         //         ))
         }
         
-        </ProductContext.Provider>
+        </ProductsContext.Provider>
     )
 }
 
@@ -50,4 +51,4 @@ export const ProductsProvider = ({children}) => {
 // Using useState
 // Setting default shop data.
 
-export default ProductsProvider;
+// export default ProductsProvider;

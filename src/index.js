@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import { UserProvider } from './contexts/user.context';
+import { ProductsProvider } from './contexts/products.context';
 
 import './index.scss';
 
@@ -11,11 +12,14 @@ import reportWebVitals from './reportWebVitals';
 
 const rootElement = document.getElementById('root');
 
+// When fetching products, you generally want to filter down based on user. For this reason we are wrapping the UserProvider around the ProductsProvider.
 render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <ProductsProvider>
+          <App />
+        </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,
