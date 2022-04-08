@@ -11,54 +11,47 @@ const Checkout = () => {
 
     return (
         <div className='checkout-container'>
+            <div className='checkout-header'>
+                <div className='header-block'>
+                    <span>Product</span>
+                </div>
+                
+                <div className='header-block'>
+                    <span>Description</span>
+                </div>
+                
+                <div className='header-block'>
+                    <span>Quantity</span>
+                </div>
+
+                <div className='header-block'>
+                    <span>Price</span>
+                </div>
+
+                <div className='header-block'>
+                    <span>Remove</span>
+                </div>
+            </div>
+            
             { cartItems.length === 0 ?
                 <span>Your cart is currently empty</span>
             : 
                 <div>
-
-
-
-                Product:    Description:
-                Quantity:
-                Price:
-                Remove:
-                <br/>
-
-
-                <div>
-                    {
-                        // <CheckoutItem cartItem={cartItem} />
-                        cartItems.map ((cartItem) => {
-                            const {id, name, quantity} = cartItem;
-                            return (
-                                <div key={id}>
-                                    <h2>{name}</h2>
-                                    <br/>
-                                    <span>{quantity}</span>
-                                    <br/>
-                                    <span onClick={() => removeItemToCart(cartItem)}>Decrement</span>
-                                    <br/>
-                                    <span onClick={() => addItemToCart(cartItem)}>Increment</span>
-                                </div>
-                            )
-                    })}
-                </div>
-
-                <br/>
-
+                    <div>
+                        {
+                            // <CheckoutItem cartItem={cartItem} />
+                            cartItems.map ((cartItem) => 
+                                <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+                        )}
+                    </div>
                 Total
-
-                <br/>
 
                 *Please use the following test credit card for payments*
 
-                No</div>
+                </div>
             }
 
-
-
-
-
+            <span className='total'>Total: 0</span>
         </div>
     );
 };

@@ -13,14 +13,17 @@ const CheckoutItem = ({ cartItem }) => {
 
     return (
         <div className='checkout-item-container'>
-            <img src={imageUrl} alt={`${name}`} /> <br/>
-            <div className='item-details'> <br/>
-                <span className='name'>{name} <br/></span>
-                <span className='price'><button onClick={removeProductToCart}>Remove to cart</button> {quantity} <button onClick={addProductToCart}>Add to cart</button> <br/></span>
-                <span>{quantity * price} <br/></span>
-                REMOVE
-                <br/><br/><br/>
+            <div className='image-container'>
+                <img src={imageUrl} alt={`${name}`} />
             </div>
+            
+            
+            <span className='name'>{name}</span>
+            <span className='quantity'>{quantity}</span>
+            <span className='price'>{price}</span>
+            REMOVE
+            <div className='remove-button'>&#10005;</div>
+            
         </div>
     )
 }
