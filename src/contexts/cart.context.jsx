@@ -21,58 +21,39 @@ const addCartItem = (cartItems, productToAdd) => {
 
 
 
-const removeCartItem = (cartItems, productToRemove) => {
-    // Find if cartItems contains the productToRemove already.
+const removeCartItem = (cartItems, cartItemToRemove) => {
+    // Find if cartItems contains the cartItemToRemove already.
     const existingCartItem = cartItems.find((cartItem) => 
-        cartItem.id === productToRemove.id // Runs through the entire cartItems array and check each cartItem.id is the same as productToRemove.id.
+        cartItem.id === cartItemToRemove.id // Runs through the entire cartItems array and check each cartItem.id is the same as cartItemToRemove.id.
     );
 
-    console.log(cartItems)
+    // Check if quantity is equal to 1, if it is remove that item from the cart.
+    if(existingCartItem.quantity === 1) {
+        return cartItems.filter(cartItem => cartItem.id != cartItemToRemove.id); // Runs through the array and removes any where the id is the cartItemToRemove.
+    }
 
-    // If found, decrement the quantity.
-    if (existingCartItem) {
+
+    // Return back cartItems with matching id and new reduced quantity.
+    
+    return cartItems.map((cartItem) => cartItem.id === cartItemToRemove.id 
+        ? 
         
-
-
-
-
-
-
-        return cartItems.map((cartItem) => cartItem.id === productToRemove.id 
-            ? 
-            
-            {...cartItem, quantity: cartItem.quantity - 1 // Runs through the entire cartItems array and check each cartItem.id is the same as productToRemove.id. Then it returns original cartItem and decreases the quantity by 1.
-
-
-            
-
+        {...cartItem, quantity: cartItem.quantity - 1 // Runs through the entire cartItems array and check each cartItem.id is the same as productToRemove.id. Then it returns original cartItem and decreases the quantity by 1.
         }
             : cartItem // Otherwise just return the cartItem.
         )
-    }
-
-    // Then return the new array with modified cartItems or the new cart item.
-    return [...cartItems, { ...productToRemove, quantity: 1}]
 }
 
 
 
-
-
-// const addQuantity = (num) => {
-//     alert (num)
-//     return num + 1;
-// }
-
-
-
-export const CartContext = createContext({
+    export const CartContext = createContext({
     isCartOpen: false,
     setIsCartOpen: () => {},
     cartItems: [],
     addItemToCart: () => {},
+    removeItemFromCart: () => {},
     cartCount: 0,
-    updateQuantity: () => {},
+    // updateQuantity: () => {},
 })
 
 /*
@@ -116,12 +97,19 @@ export const CartProvider = ({children}) => {
 
 
 
-    const removeItemToCart = (productToRemove) => { // When a user clicks on remove item from cart.
-        setCartItems(removeCartItem(cartItems, productToRemove));
+    const removeItemToCart = (cartItemToRemove) => { // When a user clicks on remove item from cart.
+        setCartItems(removeCartItem(cartItems, cartItemToRemove));
     }
 
 
-    const value = { isCartOpen, setIsCartOpen, addItemToCart, removeItemToCart, cartItems, cartCount };
+    const value = { 
+        isCartOpen, 
+        setIsCartOpen, 
+        addItemToCart, 
+        removeItemToCart, 
+        cartItems, 
+        cartCount 
+    };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
