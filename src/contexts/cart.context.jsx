@@ -45,27 +45,9 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 }
 
 
-const deleteCartItem = (cartItems, cartItemToRemove) => {
-    // Find if cartItems contains the cartItemToRemove already.
-    const existingCartItem = cartItems.find((cartItem) => 
-        cartItem.id === cartItemToRemove.id // Runs through the entire cartItems array and check each cartItem.id is the same as cartItemToRemove.id.
-    );
-
-    // Check if quantity is greater than 0, it removes that item from the cart.
-    if(existingCartItem.quantity > 0) {
-        return cartItems.filter(cartItem => cartItem.id != cartItemToRemove.id); // Runs through the array and removes any where the id is the cartItemToRemove.
-    }
-
-
-    // Return back cartItems with matching id and new reduced quantity.
-    
-    return cartItems.map((cartItem) => cartItem.id === cartItemToRemove.id 
-        ? 
-        
-        {...cartItem, quantity: cartItem.quantity - 1 // Runs through the entire cartItems array and check each cartItem.id is the same as productToRemove.id. Then it returns original cartItem and decreases the quantity by 1.
-        }
-            : cartItem // Otherwise just return the cartItem.
-        )
+const clearCartItem = (cartItems, cartItemToClear) => {
+    // Completely removes that item from the cart.
+        return cartItems.filter(cartItem => cartItem.id != cartItemToClear.id); // Runs through the array and removes any where the id is the cartItemToRemove.
 }
 
 
@@ -76,6 +58,7 @@ const deleteCartItem = (cartItems, cartItemToRemove) => {
     cartItems: [],
     addItemToCart: () => {},
     removeItemFromCart: () => {},
+    clearItemFromCart: () => {},
     cartCount: 0,
     // updateQuantity: () => {},
 })
@@ -131,13 +114,13 @@ export const CartProvider = ({children}) => {
 
 
 
-    const removeItemToCart = (cartItemToRemove) => { // When a user clicks on remove item from cart.
+    const removeItemToCart = (cartItemToRemove) => { // When a user clicks on remove, we remove 1 quantity of item from cart.
         setCartItems(removeCartItem(cartItems, cartItemToRemove));
     }
 
 
-    const deleteItemToCart = (cartItemToRemove) => { // When a user clicks on remove item from cart.
-        setCartItems(deleteCartItem(cartItems, cartItemToRemove));
+    const clearItemFromCart = (cartItemToClear) => { // When a user clicks on X, we remove all quantity of items from cart.
+        setCartItems(clearCartItem(cartItems, cartItemToClear));
     }
 
 
@@ -146,7 +129,7 @@ export const CartProvider = ({children}) => {
         setIsCartOpen, 
         addItemToCart, 
         removeItemToCart, 
-        deleteItemToCart, 
+        clearItemFromCart, 
         cartItems, 
         cartCount 
     };
