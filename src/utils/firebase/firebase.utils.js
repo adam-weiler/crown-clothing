@@ -23,11 +23,19 @@ import {
     doc,
     getDoc,
     setDoc,
+    collection,
+    writeBatch,
+    query, 
+    getDocs,
 } from 'firebase/firestore';
 // gireFirestore - We need to instantiate our Firestore instance.
 // doc - We can retrieve documents inside of our Firestore database.
 // getDoc - Getting the documents' data.
 // setDoc - Setting the documents' data.
+// collection - Allow us to get a Collection reference.
+// writeBatch - A batch lets us combine several different write events into the same transaction. The example of adding from 1 bank account & removing from another.
+// query - 
+// getDocs - 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,6 +61,39 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore(); // Instantiate our Firestore.
+
+export const addCollectionAndDocuments = async (
+    collectionKey, 
+    objectsToAdd,
+    field
+) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        batch.set(docRef, object);
+    });
+
+    await batch.commit();
+    console.log('done');
+};
+
+export const getCategoriesAndDocuments = async () => {  // The reason we return categoryMap here instead of calling the firebase functions throughout the app is so if firebase updates, we only need to change this 1 function. We don't need to search for every firebase call, the changes are just here.
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q); // getDocs is the asynchronous ability to fetch document snapshots.
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+
+
+    return categoryMap;
+}
+
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => { // Receives userAuth object and then stores it in Firestore. The additionalInformation is optional, depending if we're recieving the user object from Google (addtitionalInfo not required), or if new user is signing up (addititionalInfo is required).
     if (!userAuth) return;  // If we don't receive a userAuth we don't want to run this function.
