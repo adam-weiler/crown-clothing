@@ -12,7 +12,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Navigation />} >
         <Route index={true} element={<Home />} />
-        <Route path='shop' element={<Shop />} />
+        <Route path='shop/*' element={<Shop />} />  { /* Match shop/anything. So shop/hats will render the Shop component, which will have it's own routes inside.*/}
         <Route path='auth' element={<Authentication />} />
         <Route path='checkout' element={<Checkout />} />
       </Route>
