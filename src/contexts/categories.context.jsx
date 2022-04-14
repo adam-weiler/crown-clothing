@@ -5,14 +5,14 @@ import { getCategoriesAndDocuments } from '../utils/firebase/firebase.utils';
 // import PRODUCTS from '../assets/shop-data.json'; // This is the old way we were getting data from the JSON file.
 // import SHOP_DATA from '../shop-data';  // This is used once to add new 'categories' collection to Firebase. Typically we shouldn't do this on the frontend.
 
-export const ProductsContext = createContext({
-    products: [],
+export const CategoriesContext = createContext({
+    categoriesMap: {},
 });
 
-export const ProductsProvider = ({children}) => {
+export const CategoriesProvider = ({children}) => {
 
     // const [products, setProducts] = useState(PRODUCTS);
-    const [products, setProducts] = useState([]);
+    const [categoriesMap, setCategoriesMap] = useState({});
     // useEffect(() => {    // This is used once to add new 'categories' collection to Firebase. Typically we shouldn't do this on the frontend.
     //     addCollectionAndDocuments('categories', SHOP_DATA)
     // }, [])
@@ -22,15 +22,16 @@ export const ProductsProvider = ({children}) => {
         const getCategoriesMap = async () => { // B - Any async code inside of a useEffect, should be wrapped within an async code.
             const categoryMap = await getCategoriesAndDocuments(); // A - getCategoriesAndDocuments is an async function.
             console.log(categoryMap);
+            setCategoriesMap(categoryMap)
         }
         getCategoriesMap();
     }, []);
 
-    const value = { products };
+    const value = { categoriesMap };
 
     return (
-        <ProductsContext.Provider value={value}>
+        <CategoriesContext.Provider value={value}>
             {children}
-        </ProductsContext.Provider>
+        </CategoriesContext.Provider>
     )
 }
