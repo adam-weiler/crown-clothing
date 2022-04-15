@@ -10,7 +10,7 @@ import { CartContext } from '../../contexts/cart.context';
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import { signOutUser } from '../../utils/firebase/firebase.utils';
 
-import './navigation.styles.scss';
+import { NavigationContainer, NavLinks, NavLink, LogoContainer } from './navigation.styles';
 
 const Navigation = () => {
   // const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -29,30 +29,54 @@ const Navigation = () => {
 
     return (
       <Fragment>
-        <div className='navigation'>
-            <Link className='logo-container' to='/'>
+        <NavigationContainer>
+          {/* 
+          <div className='navigation'>
+          */}
+            <LogoContainer to='/'>
+                <CrwnLogo className='logo' />
+            </LogoContainer>
+          {/* 
+          <Link className='logo-container' to='/'>
                 <CrwnLogo className='logo' />
             </Link>
+          */}
+            <NavLinks>
+
+            {/* 
             <div className='nav-links-container'>
-                <Link className='nav-link' to='/shop'>
+            */}
+
+                <NavLink to='/shop'>
+                    SHOP
+                </NavLink>
+                {/* 
+                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
+                */}
                 
                 { // If there is a currentUser, render the sign-out link.
                   currentUser ? (
-                    <span className='nav-link' onClick={signOutUser}>SIGN OUT</span>
+                    <NavLink as='span' onClick={signOutUser}>SIGN OUT</NavLink>
+                    /* 
+                  <span className='nav-link' onClick={signOutUser}>SIGN OUT</span>
+                  */
                   ) : (// If there is no currentUser, render the sign-in link.
-                    <Link className='nav-link' to='/auth'>
+                    <NavLink to='/auth'>
                       SIGN IN
-                    </Link>
+                    </NavLink>
                   )
                 }
               <CartIcon />
-            </div>
+            </NavLinks>
 
                 {isCartOpen && <CartDropdown /> // Checks isCartOpen and renders the CartDropdown component. Both isCartOpen and the component must evaluate to a truthy value. Components are always truthy. Then it will return the last value (which is the component).
                 }
-          </div>
+                {/* 
+                </div>
+                */}
+          </NavigationContainer>
         <Outlet />
       </Fragment>
     )
