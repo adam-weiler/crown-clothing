@@ -76,7 +76,6 @@ export const addCollectionAndDocuments = async (
     });
 
     await batch.commit();
-    console.log('done');
 };
 
 export const getCategoriesAndDocuments = async () => {  // The reason we return categoryMap here instead of calling the firebase functions throughout the app is so if firebase updates, we only need to change this 1 function. We don't need to search for every firebase call, the changes are just here.
@@ -136,7 +135,7 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 export const signInAuthUserWithEmailandPassword = async (email, password) => {
     if (!email || !password) return; // If no email or password are provided, don't run this function.
 
-    console.log('signInAuthUserWithEmailandPassword starting')
+    // console.log('signInAuthUserWithEmailandPassword starting')
 
     return await signInWithEmailAndPassword (auth, email, password);
 }

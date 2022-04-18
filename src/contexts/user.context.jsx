@@ -15,7 +15,6 @@ export const UserProvider = ({ children }) => { // Any children of UserProvider 
 
     useEffect(() => { // It checks the authentication state automatically when this function mounts.
         const unsubscribe = onAuthStateChangedListener((user) => {
-            console.log(user);
             if (user) {
                 createUserDocumentFromAuth(user); // User signing in with Google or with a new account.
             }

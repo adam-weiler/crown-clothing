@@ -42,7 +42,7 @@ const SignInForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault(); // We don't want any default behaviour of the form.
 
-        console.log('handlesubmit')
+        // console.log('handlesubmit')
 
         try { // Check if we've authenticated the user with email & password.
             const {user} = await signInAuthUserWithEmailandPassword(  // Try to create new authentication with email and password.
@@ -62,7 +62,7 @@ const SignInForm = () => {
                     alert('No user associated with this email.');
                     break;
                 default:
-                    console.log(error);
+                    // console.log(error);
             }
         }
     }
