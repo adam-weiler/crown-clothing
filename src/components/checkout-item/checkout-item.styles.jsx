@@ -8,6 +8,7 @@ export const CheckoutItemContainer = styled.div`
     padding: 15px 0;
     font-size: 20px;
     align-items: center;
+    /* background-color: red; */
 `
 
 export const ImageContainer = styled.div`
@@ -20,41 +21,23 @@ export const ImageContainer = styled.div`
     }
 `
 
-export const Quantity = styled.span`
-    display: flex;
-  
-    .arrow {
-      cursor: pointer;
-    }
+export const BaseSpan = styled.span`
+  width: 23%;
+`
 
-    .value {
-      margin: 0 10px;
-    }
+export const Quantity = styled(BaseSpan)`
+    display: flex;
+`
+
+export const Arrow = styled.div`
+  cursor: pointer;
+`
+
+export const Value = styled.span`
+  margin: 0 10px;
 `
 
 export const RemoveButton = styled.span`
     padding-left: 12px;
     cursor: pointer;
 `
-
-
-// .checkout-item-container {
-
-  
-    // .image-container {
-
-//     }
-//     .name,
-//     .quantity,
-//     .price {
-//       width: 23%;
-//     }
-  
-//     .quantity {
-
-//     }
-  
-//     .remove-button {
-
-//     }
-// }  

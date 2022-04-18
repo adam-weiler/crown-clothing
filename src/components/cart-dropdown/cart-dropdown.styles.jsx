@@ -42,4 +42,9 @@ export const CartItems = styled.div`
     display: flex;
     flex-direction: column;
     overflow: scroll;
+
+    /* I'm adding this part to prevent the horizontal and vertical scroll bar from appearing. Using Chrome 100.0.4896.88 */
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
 `

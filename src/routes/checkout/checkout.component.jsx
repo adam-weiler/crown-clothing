@@ -4,7 +4,7 @@ import { CartContext } from '../../contexts/cart.context';
 
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 
-import { CheckoutContainer, CheckoutHeader, HeaderBlock, Total } from './checkout.styles';
+import { CheckoutContainer, CheckoutHeader, HeaderBlock, AllItems, Total } from './checkout.styles';
 
 const Checkout = () => {
     const { cartItems, cartTotal } = useContext(CartContext);  
@@ -36,19 +36,14 @@ const Checkout = () => {
             { cartItems.length === 0 ?
                 <span>Your cart is currently empty</span>
             : 
-                <div>
-                    <div>
+                <AllItems>
                         {
                             // <CheckoutItem cartItem={cartItem} />
                             cartItems.map ((cartItem) => 
                                 <CheckoutItem key={cartItem.id} cartItem={cartItem} />
                         )}
-                    </div>
-                Total
-
                 *Please use the following test credit card for payments*
-
-                </div>
+                </AllItems>
             }
 
             <Total>Total: ${cartTotal}</Total>

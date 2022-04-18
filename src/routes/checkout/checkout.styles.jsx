@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 
 export const CheckoutContainer = styled.div`
     width: 55%;
@@ -22,8 +21,15 @@ export const HeaderBlock = styled.div`
     text-transform: capitalize;
     width: 23%;
 
-    /* &:last-child {
-      width: 8%; */
+    &:last-child {
+      width: 8%;
+    }
+`
+
+export const AllItems = styled.div`
+    margin-left: auto;
+    font-size: 36px;
+    /* background-color: blue; */
 `
 
 export const Total = styled.div`
@@ -31,22 +37,3 @@ export const Total = styled.div`
     margin-left: auto;
     font-size: 36px;
 `
-
-
-// .checkout-container {
-
-  
-//     .checkout-header {
-
-  
-//       .header-block {
-//         &:last-child {
-//           width: 8%;
-// //         }
-// //       }
-//     }
-  
-//     .total {
-
-//     }
-// }  
