@@ -1,5 +1,8 @@
 // import { getByDisplayValue } from '@testing-library/react';
 import { createContext, useState, useEffect, useReducer } from 'react';
+
+import { createAction } from '../utils/reducer/reducer.utils';
+
 import { onAuthStateChangedListener, createUserDocumentFromAuth } from '../utils/firebase/firebase.utils'
 
 // The actual value you want to access.
@@ -47,7 +50,11 @@ export const UserProvider = ({ children }) => { // Any children of UserProvider 
 
 
     const setCurrentUser = (user) => {
-        dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user })
+        dispatch(
+            createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user
+        ));
+        
+        // dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user })
     }
 
     const value= { currentUser, setCurrentUser };
