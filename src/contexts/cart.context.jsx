@@ -59,6 +59,11 @@ export const CartContext = createContext({
     cartTotal: 0,
 })
 
+const CART_ACTION_TYPES = {
+    SET_CART_ITEMS: 'SET_CART_ITEMS',
+    SET_IS_CART_OPEN: 'SET_IS_CART_OPEN'
+}
+
 const INITIAL_STATE = {
     isCartOpen: false,
     cartItems: [],
@@ -73,17 +78,17 @@ const cartReducer = (state, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case 'SET_CART_ITEMS':
+        case CART_ACTION_TYPES.SET_CART_ITEMS:
             return {
                 ...state,
                 ...payload,
             }
-        case 'OPEN_CLOSE_CART':
-            console.log(state)
-            console.log(payload)
+        case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+            // console.log(state)
+            // console.log(payload)
             return {
                 ...state,
-                ...payload,
+                isCartOpen: payload,
             }
         default:
             throw new Error(`Unhandled type of ${type} in cartReducer.`)
@@ -98,15 +103,15 @@ export const CartProvider = ({children}) => {
 
         const newCartTotal = newCartItems.reduce((total, cartItem) => total + (cartItem.quantity * cartItem.price), 0)
 
-        dispatch({ type: 'SET_CART_ITEMS', payload: { cartItems: newCartItems, cartTotal: newCartTotal, cartCount: newCartCount }});
+        dispatch({ type: CART_ACTION_TYPES.SET_CART_ITEMS, payload: { cartItems: newCartItems, cartTotal: newCartTotal, cartCount: newCartCount }});
     }
 
 
 
-    const isCartOpenReducer = (openShutCart) => {
-        console.log('hi')
-        dispatch({ type: 'OPEN_CLOSE_CART', payload: { isCartOpen: openShutCart }});
-    }
+    // const isCartOpenReducer = (openShutCart) => {
+    //     console.log('hi')
+    //     dispatch({ type: 'OPEN_CLOSE_CART', payload: { isCartOpen: openShutCart }});
+    // }
 
 
 
@@ -128,12 +133,12 @@ export const CartProvider = ({children}) => {
 
 
 
-    const setIsCartOpen = (isCartOpen) => {
-        console.log('Cart new state: ' + isCartOpen)
+    const setIsCartOpen = (bool) => {
+        // console.log('Cart new state: ' + isCartOpen)
         // const openShutCart = !isCartOpen;
         // console.log('Cart new state: ' + openShutCart)
-        isCartOpenReducer(isCartOpen);
-        
+        // isCartOpenReducer(isCartOpen);
+        dispatch({ type: CART_ACTION_TYPES.SET_IS_CART_OPEN, payload: bool });
     }
 
 
