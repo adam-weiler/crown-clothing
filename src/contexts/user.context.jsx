@@ -19,6 +19,10 @@ export const USER_ACTION_TYPES = {
     'SET_CURRENT_USER': 'SET_CURRENT_USER'
 }
 
+const INITIAL_STATE = {
+    currentUser: null
+}
+
 const userReducer = (state, action) => {
     // console.log('Dispatched was called')
     // console.log(action)
@@ -35,9 +39,7 @@ const userReducer = (state, action) => {
     }
 }
 
-const INITIAL_STATE = {
-    currentUser: null
-}
+
 
 
 
