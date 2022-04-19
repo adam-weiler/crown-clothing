@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useReducer } from 'react';
 
 const addCartItem = (cartItems, productToAdd) => {
     // Find if cartItems contains the productToAdd already.
@@ -18,8 +18,6 @@ const addCartItem = (cartItems, productToAdd) => {
     // [{...productsToAdd, quantity: 1}]
     return [...cartItems, { ...productToAdd, quantity: 1}]
 }
-
-
 
 const removeCartItem = (cartItems, cartItemToRemove) => {
     // Find if cartItems contains the cartItemToRemove already.
@@ -44,15 +42,12 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
         )
 }
 
-
 const clearCartItem = (cartItems, cartItemToClear) => {
     // Completely removes that item from the cart.
         return cartItems.filter(cartItem => cartItem.id != cartItemToClear.id); // Runs through the array and removes any where the id is the cartItemToRemove.
 }
 
-
-
-    export const CartContext = createContext({
+export const CartContext = createContext({
     isCartOpen: false,
     setIsCartOpen: () => {},
     cartItems: [],
@@ -64,80 +59,87 @@ const clearCartItem = (cartItems, cartItemToClear) => {
     cartTotal: 0,
 })
 
-
-
-
-
-
-
-
-
-
-
-/*
-Product 
-{
-    id,
-    name,
-    price,
-    imageUrl
+const INITIAL_STATE = {
+    isCartOpen: false,
+    cartItems: [],
+    cartCount: 0,
+    cartTotal: 0,
 }
 
-Cart Item ; very similar 
-{
-    id,
-    name,
-    price,
-    imageUrl,
-    quantity
+const cartReducer = (state, action) => {
+    console.log('Dispatcher was called')
+    console.log(action)
+    // The Reducer should not handle any business actions.
+    const { type, payload } = action;
+
+    switch (type) {
+        case 'SET_CART_ITEMS':
+            return {
+                ...state,
+                ...payload,
+            }
+        case 'OPEN_CLOSE_CART':
+            console.log(state)
+            console.log(payload)
+            return {
+                ...state,
+                ...payload,
+            }
+        default:
+            throw new Error(`Unhandled type of ${type} in cartReducer.`)
+    }
 }
-*/
 
 export const CartProvider = ({children}) => {
-    const [isCartOpen, setIsCartOpen] = useState(false); // By default the cart dropdown is hidden.
-    const [cartItems, setCartItems] = useState([]); // By default, our cart is empty.
-    const [cartCount, setCartCount] = useState(0);
-    const [cartTotal, setCartTotal] = useState(0);
+    const [{cartItems, isCartOpen, cartCount, cartTotal}, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+
+    const updateCartItemsReducer = (newCartItems) => {
+        const newCartCount = newCartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+
+        const newCartTotal = newCartItems.reduce((total, cartItem) => total + (cartItem.quantity * cartItem.price), 0)
+
+        dispatch({ type: 'SET_CART_ITEMS', payload: { cartItems: newCartItems, cartTotal: newCartTotal, cartCount: newCartCount }});
+    }
 
 
-    useEffect (() => { // Recalculate the cartCount everytime the cartItems changes.
-        const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0)
-        setCartCount(newCartCount)
-    }, [cartItems]); // Runs every time the cartItems changes.
 
+    const isCartOpenReducer = (openShutCart) => {
+        console.log('hi')
+        dispatch({ type: 'OPEN_CLOSE_CART', payload: { isCartOpen: openShutCart }});
+    }
 
-
-    useEffect (() => { // Recalculate the cartTotal everytime the cartItems changes.
-        const newCartTotal = cartItems.reduce((total, cartItem) => total + (cartItem.quantity * cartItem.price), 0)
-        setCartTotal(newCartTotal)
-    }, [cartItems]); // Runs every time the cartItems changes.
 
 
 
     const addItemToCart = (productToAdd) => { // When a user clicks on add item to cart.
-        
-        // setQuantity(addQuantity(quantity))
-
-
-
-        setCartItems(addCartItem(cartItems, productToAdd));
+        const newCartItems = addCartItem(cartItems, productToAdd);
+        updateCartItemsReducer(newCartItems);
     }
-
-
 
     const removeItemToCart = (cartItemToRemove) => { // When a user clicks on remove, we remove 1 quantity of item from cart.
-        setCartItems(removeCartItem(cartItems, cartItemToRemove));
+        const newCartItems = removeCartItem(cartItems, cartItemToRemove);
+        updateCartItemsReducer(newCartItems);
+    }
+
+    const clearItemFromCart = (cartItemToClear) => { // When a user clicks on X, we remove all quantity of items from cart.
+        const newCartItems = clearCartItem(cartItems, cartItemToClear);
+        updateCartItemsReducer(newCartItems);
     }
 
 
-    const clearItemFromCart = (cartItemToClear) => { // When a user clicks on X, we remove all quantity of items from cart.
-        setCartItems(clearCartItem(cartItems, cartItemToClear));
+
+    const setIsCartOpen = (isCartOpen) => {
+        console.log('Cart new state: ' + isCartOpen)
+        // const openShutCart = !isCartOpen;
+        // console.log('Cart new state: ' + openShutCart)
+        isCartOpenReducer(isCartOpen);
+        
     }
 
 
     const value = { 
         isCartOpen, 
-        setIsCartOpen, 
+        setIsCartOpen,
         addItemToCart, 
         removeItemToCart, 
         clearItemFromCart, 
@@ -148,13 +150,3 @@ export const CartProvider = ({children}) => {
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
-
-// Storing data somewhere
-// Storage using React Context (instead of call for data)
-// Just like user-context
-// Set up the storage first
-// before the seperate call for the data
-
-// Similar set up of context with Product or Products
-// Using useState
-// Setting default shop data.
