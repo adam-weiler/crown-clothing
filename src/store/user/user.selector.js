@@ -1,0 +1,2 @@
+// The currentUser object inside of the Redux store. Whenever the state object changes, the selector rerurns, selectCurrentUser updates, and the component rerenders. 
+export const selectCurrentUser = (state) => state.user.currentUser;

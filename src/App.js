@@ -29,7 +29,7 @@ const App = () => {
     });
 
     return unsubscribe;
-  }, [dispatch]);
+  }, []); // There is a lint error here that can be ignored. We are already using dispatch above, so we don't need to include anything here.
 
 
   return (
