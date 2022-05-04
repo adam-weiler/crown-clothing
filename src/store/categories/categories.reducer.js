@@ -1,7 +1,7 @@
-import { CATEGORIES_ACTION_TYPES } from "./category.types"
+import { CATEGORIES_ACTION_TYPES } from "./categories.types"
 
 export const CATEGORIES_INITIAL_STATE = {
-    categoriesMap: {} // The categoriesMap is blank by default.
+    categoriesMap: {}, // The categoriesMap is blank by default.
 }
 
 export const categoriesReducer = (
