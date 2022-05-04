@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
 import Category from '../category/category.component';
 import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
-import { setCategoriesMap } from '../../store/categories/categories.action';
+import { setCategories } from '../../store/categories/categories.action';
 
 import './shop.styles.jsx';
 
@@ -14,8 +14,14 @@ const Shop = () => {
 
   useEffect(() => {   
     const getCategoriesMap = async () => { // B - Any async code inside of a useEffect, should be wrapped within an async code.
-        const categoryMap = await getCategoriesAndDocuments(); // A - getCategoriesAndDocuments is an async function.
-        dispatch(setCategoriesMap(categoryMap));
+        // const categoryMap = await getCategoriesAndDocuments(); // A - getCategoriesAndDocuments is an async function.
+
+
+        const categoriesArray = await getCategoriesAndDocuments(); // A - getCategoriesAndDocuments is an async function.
+
+        console.log(categoriesArray)
+
+        dispatch(setCategories(categoriesArray));
     }
     getCategoriesMap();
 }, []);

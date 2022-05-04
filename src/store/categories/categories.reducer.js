@@ -1,7 +1,8 @@
+// The Reducer stores the basic data you get from your API.
 import { CATEGORIES_ACTION_TYPES } from "./categories.types"
 
 export const CATEGORIES_INITIAL_STATE = {
-    categoriesMap: {}, // The categoriesMap is blank by default.
+    categories: [], // The categoriesMap is blank by default.
 }
 
 export const categoriesReducer = (
@@ -13,10 +14,10 @@ export const categoriesReducer = (
     const { type, payload } = action; // Destructive off action.type, action.payload.
     
     switch(type) {
-        case CATEGORIES_ACTION_TYPES.SET_CATEGORIES_MAP:
+        case CATEGORIES_ACTION_TYPES.SET_CATEGORIES:
             return {
                 ...state, // The previous values on the state object.
-                categoriesMap: payload // And overwrite with the new value.
+                categories: payload // And overwrite with the new value.
             };
         default: // Every reducer is called for each action. However, none of the cases matched, so this part of our reducer did not change.
             return state; // Therefore we need to return the state.
