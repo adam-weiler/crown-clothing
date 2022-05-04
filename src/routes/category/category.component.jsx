@@ -11,17 +11,18 @@ import { selectCategoriesMap } from '../../store/categories/categories.selector'
 import { CategoryContainer, Title } from './category.styles.jsx';
 
 const Category = () => {
-    const { category } = useParams();
+    const { category } = useParams(); // Takes the category from the url parameter. ie: /hats, /jackets, etc.
 
-    const categoriesMap = useSelector(selectCategoriesMap);  // The currentUser object inside of the Redux store. Whenever the state object changes, the selector rerurns, currentUser updates, and the component rerenders.
+    console.log('1 render/re-rendering Category component.')
 
-    // const { categoriesMap } = useContext(CategoriesContext);
-    // const products = categoriesMap[category];
+    const categoriesMap = useSelector(selectCategoriesMap);  // The categoriesMap object inside of the Redux store. Whenever the state object changes, the selector rerurns, categoriesMap updates, and the component rerenders.
+
     const [products, setProducts] = useState(categoriesMap[category]);
 
     useEffect(() => {
+        console.log('3 Effect fired calling setProducts.')
         setProducts(categoriesMap[category]);
-    }, [category, categoriesMap]); // If our component renders, our products will not update unless our category or categoriesMap changes.
+    }, [category, categoriesMap]); // If our component renders, our products will not update unless our category or categoriesMap changes. This happens if user changes the page. ie: From /hats to /jackets.
 
     return (
         <Fragment>
